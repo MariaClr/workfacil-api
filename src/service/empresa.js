@@ -40,10 +40,13 @@ export async function  listarEmpresa() {
     
 };
 
-export async function removerEmpresa(id){
+export async function removerEmpresa(id, usuarioAutenticado){
     const t = await db.transaction(); 
  
     try{
+        if(usuarioAutenticado.id !== id){
+            throw new ErroGeral("não possui permissão para acessar", 401)
+        }
         const empresaRemovida = await Empresa.findOne({
             where: {
                 id: id,
@@ -79,7 +82,10 @@ export async function removerEmpresa(id){
 };
 
 export async function empresaAtualizar(id, endereco, numeroContato) {
-   
+
+    if(usuarioAutenticado.id !== id){
+        throw new ErroGeral("não possui permissão para acessar", 401)
+    }
         const empresaParaAtualizar = await Empresa.findByPk(id);
         if(!empresaParaAtualizar){
             throw new ErroGeral("empresa com id fornecido nao encontrada", 400);

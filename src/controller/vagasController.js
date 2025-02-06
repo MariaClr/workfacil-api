@@ -23,8 +23,9 @@ export async function listagemVagas(req, res, next) {
 
 export async function remocaoVaga(req, res, next) {
     try{
+        const usuarioAutenticado = req.usuarioAutenticado
         const id = req.params.id;
-        const vagaRemovida =  await removerVaga(id)
+        const vagaRemovida =  await removerVaga(id, usuarioAutenticado)
         return res.send(vagaRemovida);
 
     }catch(error){
@@ -35,8 +36,9 @@ export async function remocaoVaga(req, res, next) {
 
 export async function atualizacaoVaga(req, res, next) {
     try{
+        const usuarioAutenticado = req.usuarioAutenticado
         const {id, dataVencimento, descricao, area} = req.body;
-        const vagaAtualizada = await atualizarVaga(id, dataVencimento, descricao, area);
+        const vagaAtualizada = await atualizarVaga(id, dataVencimento, descricao, area,usuarioAutenticado );
         return res.send(vagaAtualizada);
 
     }catch(error){
