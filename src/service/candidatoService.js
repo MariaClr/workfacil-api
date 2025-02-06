@@ -48,11 +48,14 @@ export async function cadastrarCandidato(candidato) {
 
 
 
-export async function atualizarCandidato(id, numeroContato, endereco){
-
+export async function atualizarCandidato(id, numeroContato, endereco, usuarioAutenticado){
+    
+    if(usuarioAutenticado.id !== id){
+        throw new ErroGeral("não possui permissão para acessar", 401)
+    }
     const candidato = await Candidato.findByPk(id);
     if(candidato === null){
-        throw new Error("candidato nao encontrado")
+        throw new ErroGeral("candidato nao encontrado", 400)
     }
     if(numeroContato !== null && numeroContato.trim() !== ""){
         candidato.numeroContato = numeroContato;
@@ -64,7 +67,10 @@ export async function atualizarCandidato(id, numeroContato, endereco){
     return candidato;
 };
 
-export async function removerCandidato(id) {
+export async function removerCandidato(id, usuarioAutenticado) {
+    if(usuarioAutenticado.id !== id){
+        throw new ErroGeral("não possui permissão para acessar", 401)
+    }
     const t = await db.transaction(); 
     try {
         const candidato = await Candidato.findOne({
@@ -100,8 +106,11 @@ export async function removerCandidato(id) {
     
 }
 
-export async function listarCandidatoPorId(id) {
+export async function listarCandidatoPorId(id, usuarioAutenticado) {
     if(!id){throw new ErroGeral("id obrigatorio", 400)}
+    if(usuarioAutenticado.id !== id){
+        throw new ErroGeral("não possui permissão para acessar", 401)
+    }
 
 
     const candidato = await Candidato.findOne({

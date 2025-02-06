@@ -2,7 +2,6 @@ import {removerCandidato, atualizarCandidato, cadastrarCandidato, listarCandidat
 
 export const candidatoListagem = async (req, res , next) => {
     try{
-        console.log(req.usuario);
         const listaCandidatos = await listarCandidatos();
         return res.status(200).json(listaCandidatos);
     }
@@ -24,8 +23,10 @@ export const candidatoCadastro = async (req, res , next) => {
 
 export const candidatoAtualizacao = async (req, res , next) => {
     try{
-        const usuarioToken = req.usuario;
-        const candidatoAtualizado = atualizarCandidato(req.body);
+
+        const usuarioAutenticado = req.usuario;
+        const usuario = req.body
+        const candidatoAtualizado = atualizarCandidato(usuario.id, usuario.numeroContato, usuario.endereco, usuarioAutenticado);
         return res.status(200).json(candidatoAtualizado);
     }
     catch(error){
@@ -36,7 +37,8 @@ export const candidatoAtualizacao = async (req, res , next) => {
 
 export const candidatoRemover = async (req, res , next) => {
     try{
-        removerCandidato(req.id)
+        const usuarioAutenticado = req.usuario
+        removerCandidato(req.id, usuarioAutenticado)
         return res.status(204)
     }
     catch(error){
@@ -47,8 +49,9 @@ export const candidatoRemover = async (req, res , next) => {
 
 export const candidatoIdListar = async (req, res , next) => {
     try{
+        const usuarioAutenticado = req.usuario
 
-       const candidato =  await listarCandidatoPorId(req.params.id)
+       const candidato =  await listarCandidatoPorId(req.params.id, usuarioAutenticado)
         return res.status(200).send(candidato)
     }
     catch(error){

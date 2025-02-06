@@ -45,10 +45,13 @@ async function cadastrarVaga(vaga) {
     
 }
 
-async function removerVaga(id) {
+async function removerVaga(id, usuarioAutenticado) {
     const vaga = await Vaga.findByPk(id);
     if(vaga === null){
         throw new ErroGeral("vaga não encontrada", 400)
+    }
+    if(vaga.empresaId !== usuarioAutenticado.id){
+        throw new ErroGeral("não possui permissao ", 401)
     }
     vaga.ativo = false;
     const vagaRemovida = vaga;
@@ -57,12 +60,14 @@ async function removerVaga(id) {
 }
 
 
-async function atualizarVaga(id, dataVencimento, descricao, area) {
+async function atualizarVaga(id, dataVencimento, descricao, area, usuarioAutenticado) {
     const vaga = await Vaga.findByPk(id);
     if (vaga === null) {
         throw new ErroGeral("Vaga não encontrada", 400);
     }
-
+    if(vaga.empresaId !== usuarioAutenticado.id){
+        throw new ErroGeral("não possui permissao ", 401)
+    }
     if (dataVencimento && dataVencimento.trim() !== "") {
         vaga.dataVencimento = dataVencimento;
     }

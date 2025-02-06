@@ -1,6 +1,6 @@
 import { cadastroEmpresa, listarEmpresa, removerEmpresa, empresaAtualizar } from "../service/empresa.js"
 
-export async function cadastrarEmpresa(req, res){
+export async function cadastrarEmpresa(req, res, next){
    const  novaEmpresa = req.body
     console.log(novaEmpresa)
     try {
@@ -13,7 +13,7 @@ export async function cadastrarEmpresa(req, res){
 
 };
 
-export async function listarEmpresas(req, res){
+export async function listarEmpresas(req, res, next){
 
     try {
          const listaEmpresas = await listarEmpresa();
@@ -25,10 +25,12 @@ export async function listarEmpresas(req, res){
 
 };
 
-export async function exclusaoEmpresa(req, res) {
+export async function exclusaoEmpresa(req, res, next) {
     try{
+
+        const usuarioAutenticado = req.usuarioAutenticado
         const id = req.params;
-        const empresaRemovida = await removerEmpresa(id);
+        const empresaRemovida = await removerEmpresa(id, usuarioAutenticado);
         return res.send("empresa removida")
 
     }catch(error){
@@ -37,10 +39,11 @@ export async function exclusaoEmpresa(req, res) {
     
 };
 
-export async function atualizarEmpresa(req, res){
+export async function atualizarEmpresa(req, res, next){
     try{
+        const usuarioAutenticado = req.usuarioAutenticado
         const {id, endereco, numeroContato} = req.body;
-        const empresaAtualizada = empresaAtualizar(id, endereco, numeroContato);
+        const empresaAtualizada = empresaAtualizar(id, endereco, numeroContato, usuarioAutenticado);
         return res.send(empresaAtualizada)
     }catch(error){
         next(error)
