@@ -1,4 +1,4 @@
-import { cadastroEmpresa, listarEmpresa, removerEmpresa, empresaAtualizar } from "../service/empresa.js"
+import { cadastroEmpresa, listarEmpresa, removerEmpresa, empresaAtualizar } from "../service/empresaService.js"
 
 export async function cadastrarEmpresa(req, res, next){
    const  novaEmpresa = req.body

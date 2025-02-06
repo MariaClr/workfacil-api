@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { listarEmpresas, cadastrarEmpresa, exclusaoEmpresa, atualizarEmpresa } from '../controller/empresa.js';
+import { listarEmpresas, cadastrarEmpresa, exclusaoEmpresa, atualizarEmpresa } from '../controller/empresaController.js';
 import { empresaCadastroValidacao } from '../middleware/empresaValidacao.js';
 import { validaCadastroUsuario } from '../middleware/usuarioValidacao.js';
 import { validarToken } from '../token/token.js';

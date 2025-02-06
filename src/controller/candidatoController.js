@@ -1,60 +1,50 @@
-import {removerCandidato, atualizarCandidato, cadastrarCandidato, listarCandidatos, listarCandidatoPorId} from "../service/candidatoService.js"
+import { removerCandidato, atualizarCandidato, cadastrarCandidato, listarCandidatos, listarCandidatoPorId } from "../service/candidatoService.js";
 
-export const candidatoListagem = async (req, res , next) => {
-    try{
-        const listaCandidatos = await listarCandidatos();
-        return res.status(200).json(listaCandidatos);
+export const listarTodosCandidatos = async (req, res, next) => {
+    try {
+        const candidatos = await listarCandidatos();
+        return res.status(200).json(candidatos);
+    } catch (erro) {
+        next(erro);
     }
-    catch(error){
-        next(error)
+};
+
+export const cadastrarNovoCandidato = async (req, res, next) => {
+    try {
+        const novoCandidato = await cadastrarCandidato(req.body);
+        return res.status(201).json(novoCandidato);
+    } catch (erro) {
+        next(erro);
     }
-}
+};
 
-
-export const candidatoCadastro = async (req, res , next) => {
-    try{
-        const cadastro = await cadastrarCandidato(req.body);
-        return res.status(201).json(cadastro);
-    }
-    catch(error){
-        next(error)
-    }
-}
-
-export const candidatoAtualizacao = async (req, res , next) => {
-    try{
-
+export const atualizarDadosCandidato = async (req, res, next) => {
+    try {
         const usuarioAutenticado = req.usuario;
-        const usuario = req.body
-        const candidatoAtualizado = atualizarCandidato(usuario.id, usuario.numeroContato, usuario.endereco, usuarioAutenticado);
+        const { id, numeroContato, endereco } = req.body;
+        const candidatoAtualizado = await atualizarCandidato(id, numeroContato, endereco, usuarioAutenticado);
         return res.status(200).json(candidatoAtualizado);
+    } catch (erro) {
+        next(erro);
     }
-    catch(error){
-        next(error)
-    }
-}
+};
 
-
-export const candidatoRemover = async (req, res , next) => {
-    try{
-        const usuarioAutenticado = req.usuario
-        removerCandidato(req.id, usuarioAutenticado)
-        return res.status(204)
+export const removerCandidatoPorId = async (req, res, next) => {
+    try {
+        const usuarioAutenticado = req.usuario;
+        await removerCandidato(req.params.id, usuarioAutenticado);
+        return res.status(204).send();
+    } catch (erro) {
+        next(erro);
     }
-    catch(error){
-        next(error)
-    }
-}
+};
 
-
-export const candidatoIdListar = async (req, res , next) => {
-    try{
-        const usuarioAutenticado = req.usuario
-
-       const candidato =  await listarCandidatoPorId(req.params.id, usuarioAutenticado)
-        return res.status(200).send(candidato)
+export const buscarCandidatoPorId = async (req, res, next) => {
+    try {
+        const usuarioAutenticado = req.usuario;
+        const candidato = await listarCandidatoPorId(req.params.id, usuarioAutenticado);
+        return res.status(200).json(candidato);
+    } catch (erro) {
+        next(erro);
     }
-    catch(error){
-        next(error)
-    }
-}
+};
