@@ -1,4 +1,4 @@
-import  { listarUsuarios, buscarUsuarioPorId, buscarCandidatoPorUsuario, buscarEmpresaPorUsuario, fazerLogin}from "../service/usuarioService.js";
+import  { listarUsuarios, buscarUsuarioPorId, buscarCandidatoPorUsuario, buscarEmpresaPorUsuario, fazerLogin, recuperacaoSenha}from "../service/usuarioService.js";
 
 async function usuarioLogin(req, res, next) {
     try{
@@ -59,9 +59,21 @@ async function listarEmpresaPorUsuario(req, res, next){
         next(error)
     }
 
+
+}
+
+async function recuperarSenha(req, res, next){
+    try{
+       const email =  req.body.email
+       const result = await recuperacaoSenha(email);
+       return res.status(200).json("email para recuperar senha enviado");
+
+    }catch(error){
+        next(error)
+    }
 }
 
 
 
 
-export { usuarioListagem, listarUsuarioPorId, listarCandidatoPorUsuario, listarEmpresaPorUsuario, usuarioLogin};
+export { usuarioListagem, listarUsuarioPorId, listarCandidatoPorUsuario, listarEmpresaPorUsuario, usuarioLogin, recuperarSenha};
