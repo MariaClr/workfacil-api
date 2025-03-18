@@ -1,10 +1,8 @@
 import nodemailer from "nodemailer"
 export const gerarTokenSenha = async () => {
     let token = Math.random().toString(16)
-
-    while(await Usuario.findOne({ token_nova_senha: token })) {
         token = Math.random().toString(16)
-    }
+  
 
     return token
 }
@@ -25,14 +23,16 @@ const transporter = nodemailer.createTransport({
 
 
 // Envie o email
-export async function enviarEmail(tokenSenha){
+export async function enviarEmail(texto){
     
     const mailOptions = {
   from: 'clara124g@email.com',
-  to: 'm.claraoliveiraramos@email.com',
+  to: 'm.claraoliveiraramos@gmail.com',
   subject: 'Enviando Email usando Node.js',
-  text: 'Isso foi fácil! ${tokenSenha}' 
+  text: texto
 };
+
+console.log("enviando")
    const email =  transporter.sendMail(mailOptions, function(error, info){
   if (error) {
     console.log('Erro:', error);
@@ -40,5 +40,4 @@ export async function enviarEmail(tokenSenha){
     console.log('Email enviado: ', info.response);
   }
 });
-console.lof("email enviado " + email)
 } 

@@ -1,5 +1,5 @@
 import { ErroGeral } from "../error/errorPesonalizado.js";
-
+import { Sequelize } from "sequelize";
 function errorHandler(err, req, res, next){
     
         if (err instanceof ErroGeral) {

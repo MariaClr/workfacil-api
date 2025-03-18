@@ -1,4 +1,4 @@
-import  { listarUsuarios, buscarUsuarioPorId, buscarCandidatoPorUsuario, buscarEmpresaPorUsuario, fazerLogin, recuperacaoSenha}from "../service/usuarioService.js";
+import  { listarUsuarios, buscarUsuarioPorId, buscarCandidatoPorUsuario, buscarEmpresaPorUsuario, fazerLogin, recuperacaoSenha, gerarNovaSenha}from "../service/usuarioService.js";
 
 async function usuarioLogin(req, res, next) {
     try{
@@ -73,7 +73,19 @@ async function recuperarSenha(req, res, next){
     }
 }
 
+async function novaSenha(req,res, next) {
+    try{
+        const {tokenSenha, novaSenha} =  req.body
+        console.log("aaa " + tokenSenha, novaSenha)
+        const result = await gerarNovaSenha(tokenSenha, novaSenha );
+        return res.status(200).json("senha atualizada com sucesso");
+ 
+     }catch(error){
+         next(error)
+     }
+}
 
 
 
-export { usuarioListagem, listarUsuarioPorId, listarCandidatoPorUsuario, listarEmpresaPorUsuario, usuarioLogin, recuperarSenha};
+
+export { usuarioListagem, listarUsuarioPorId, listarCandidatoPorUsuario, listarEmpresaPorUsuario, usuarioLogin, recuperarSenha, novaSenha};

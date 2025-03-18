@@ -29,6 +29,11 @@ const Usuario = db.define("Usuario", {
     tipoUsuario: {
         allowNull: false,
         type: DataTypes.ENUM("empresa", "candidato", "admin")
+    },
+    tokenSenha: {
+        allowNull:true,
+        type: DataTypes.STRING
+
     }
 
 }, {

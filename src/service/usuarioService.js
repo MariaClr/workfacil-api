@@ -1,7 +1,7 @@
 import Usuario from "../model/usuario.js";
 import { ErroGeral } from "../error/errorPesonalizado.js";
 import Empresa from "../model/empresa.js";
-import { compararSenha } from "../security/criptografia.js";
+import { compararSenha, gerarSenhaCriptografada } from "../security/criptografia.js";
 import { gerarToken } from "../token/token.js";
 import { gerarTokenSenha, enviarEmail } from "../security/nodemailer.js";
 
@@ -107,7 +107,7 @@ async function buscarEmpresaPorUsuario(id) {
     if(!email){
         throw new ErroGeral("email nao fornecido", 400 );
     } 
-    const usuario = Usuario.findOne({
+    const usuario = await Usuario.findOne({
         where: {
             email:email
         }
@@ -116,8 +116,12 @@ async function buscarEmpresaPorUsuario(id) {
         throw new ErroGeral("usuario não encontrado", 404 );
     }
     try{
-          const tokenSenha  = gerarTokenSenha();
-          const emailEnviado = await enviarEmail(tokenSenha);
+          const tokenSenha  = await gerarTokenSenha();
+          console.log(tokenSenha)
+          usuario.tokenSenha = tokenSenha;
+          usuario.save()
+          let texto = `seu texto ${tokenSenha}`
+          const emailEnviado = await enviarEmail(texto);
           return emailEnviado
     }catch(error){
         throw new Error(error);
@@ -127,4 +131,32 @@ async function buscarEmpresaPorUsuario(id) {
 }
     
 
-export { listarUsuarios, buscarUsuarioPorId, buscarEmpresaPorUsuario, buscarCandidatoPorUsuario, fazerLogin, recuperacaoSenha}
+async function gerarNovaSenha(token, senha) {
+    if(!token || !senha){
+        throw new ErroGeral("dados necessarios nao fornecidos", 400 );
+    } 
+
+    console.log(token, senha)
+    const usuario = await Usuario.findOne({
+        where: {
+            tokenSenha:token
+        }
+    })
+    if(!usuario){
+         throw new ErroGeral("usuario não cadastrado ou token de nova senha incorreto", 404 );
+    }
+    try{
+         
+          usuario.senha = await gerarSenhaCriptografada(senha);
+          console.log("aasdasdasd" + usuario.senha)
+          usuario.save()
+          let texto = `senha alterada com sucesso`
+          const emailEnviado = await enviarEmail(texto);
+          return emailEnviado
+    }catch(error){
+        throw new Error(error);
+    }
+  
+}
+
+export { listarUsuarios, buscarUsuarioPorId, buscarEmpresaPorUsuario, buscarCandidatoPorUsuario, fazerLogin, recuperacaoSenha, gerarNovaSenha}
