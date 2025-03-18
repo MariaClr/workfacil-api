@@ -3,7 +3,8 @@ import 'dotenv/config';
 import { Sequelize } from "sequelize";
 const banco=process.env.BANCO
 
-const db = new Sequelize(`mysql://root:0208@localhost:3306/workfacil`, {
+const db = new Sequelize("workfacil", "root", "root", {
+  host: "localhost",
     dialect: "mysql",
    
     pool: {
@@ -14,7 +15,7 @@ const db = new Sequelize(`mysql://root:0208@localhost:3306/workfacil`, {
           }
 });
 
-db.sync({})  // `force: true` apaga e recria as tabelas
+db.sync({force: false, alter: true})  // `force: true` apaga e recria as tabelas
   .then(() => {
     console.log('Banco de dados sincronizado');
   })

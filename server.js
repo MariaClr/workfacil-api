@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
 import express from "express";
-import "./conf/relacoes.js"
-import {router as empresaRoute} from "./routes/empresaRoute.js"
-import { router  as candidatoRoute} from "./routes/candidatoRoute.js";
-import {router as vagasRoute} from "./routes/vagasRoute.js"
-import { router as usuarioRoute } from "./routes/usuarioRoute.js";
+import "./src/conf/relacoes.js"
+import {router as empresaRoute} from "./src/routes/empresaRoute.js"
+import { router  as candidatoRoute} from "./src/routes/candidatoRoute.js";
+import {router as vagasRoute} from "./src/routes/vagasRoute.js"
+import { router as usuarioRoute } from "./src/routes/usuarioRoute.js";
 
 dotenv.config();
 
@@ -24,6 +24,6 @@ app.use("/usuario", usuarioRoute);
 
 
 
-app.listen(3000, ()=>{
+app.listen(porta, ()=>{
     console.log("ouvindo porta: " + porta)
 })
