@@ -3,6 +3,7 @@ import { ErroGeral } from "../error/errorPesonalizado.js";
 import Empresa from "../model/empresa.js";
 import { compararSenha } from "../security/criptografia.js";
 import { gerarToken } from "../token/token.js";
+import { gerarTokenSenha, enviarEmail } from "../security/nodemailer.js";
 
 
 async function fazerLogin(email, senha) {
@@ -101,7 +102,29 @@ async function buscarEmpresaPorUsuario(id) {
     return usuario;
 
 }
-    
+
+ async function recuperacaoSenha(email){
+    if(!email){
+        throw new ErroGeral("email nao fornecido", 400 );
+    } 
+    const usuario = Usuario.findOne({
+        where: {
+            email:email
+        }
+    })
+    if(!usuario){
+        throw new ErroGeral("usuario não encontrado", 404 );
+    }
+    try{
+          const tokenSenha  = gerarTokenSenha();
+          const emailEnviado = await enviarEmail(tokenSenha);
+          return emailEnviado
+    }catch(error){
+        throw new Error(error);
+    }
+  
+
+}
     
 
-export { listarUsuarios, buscarUsuarioPorId, buscarEmpresaPorUsuario, buscarCandidatoPorUsuario, fazerLogin}
+export { listarUsuarios, buscarUsuarioPorId, buscarEmpresaPorUsuario, buscarCandidatoPorUsuario, fazerLogin, recuperacaoSenha}

@@ -14,6 +14,8 @@ const porta = process.env.PORTA;
 
 
 
+
+
 app.use(express.json());
 
 app.use("/empresas", empresaRoute);

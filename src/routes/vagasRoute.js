@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { cadastroVaga, listagemVagas, remocaoVaga, atualizacaoVaga } from "../controller/vagasController.js";
+import { cadastroVaga, listagemVagas, remocaoVaga, atualizacaoVaga} from "../controller/vagasController.js";
 import { validarVaga } from "../middleware/vagaValidacao.js";
 import { validarToken } from "../token/token.js";
 import { verificaPermissao } from "../security/permissoes.js";

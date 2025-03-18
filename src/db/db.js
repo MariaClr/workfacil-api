@@ -3,8 +3,7 @@ import 'dotenv/config';
 import { Sequelize } from "sequelize";
 const banco=process.env.BANCO
 
-const db = new Sequelize("workfacil", "root", "root", {
-  host: "localhost",
+const db = new Sequelize(banco, {
     dialect: "mysql",
    
     pool: {
