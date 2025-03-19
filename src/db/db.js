@@ -14,7 +14,7 @@ const db = new Sequelize(banco, {
           }
 });
 
-db.sync({force: false, alter: true})  // `force: true` apaga e recria as tabelas
+db.sync({force: false})  // `force: true` apaga e recria as tabelas
   .then(() => {
     console.log('Banco de dados sincronizado');
   })

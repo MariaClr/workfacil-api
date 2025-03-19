@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken"
 const secret = process.env.SECRETTOKEN
 
 function gerarToken(usuario){
-    const token = jwt.sign({usuarioId: usuario.id, email: usuario.email, perfil: usuario.tipoUsuario}, "829", {
+    const token = jwt.sign({usuarioId: usuario.id, email: usuario.email, perfil: usuario.tipoUsuario}, secret, {
             expiresIn: "1h"});
 
     return token;
@@ -19,7 +19,7 @@ async function validarToken(req, res, next){
     console.log(token)
     
     try {
-        const decoded = await jwt.verify(token, "829");
+        const decoded = await jwt.verify(token, secret);
 
         req.usuarioAutenticado = decoded;
         console.log(decoded);

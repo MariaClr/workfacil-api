@@ -11,6 +11,7 @@ const Empresa = db.define("Empresa", {
     cnpj:{
         type: DataTypes.STRING,
         allowNull: false,
+        unique:true,
         validate: {
             len: {
                 args: [14, 14],
