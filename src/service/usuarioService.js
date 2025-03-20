@@ -148,7 +148,7 @@ async function gerarNovaSenha(token, senha) {
     try{
          
           usuario.senha = await gerarSenhaCriptografada(senha);
-          console.log("aasdasdasd" + usuario.senha)
+          usuario.tokenSenha = null
           usuario.save()
           let texto = `senha alterada com sucesso`
           const emailEnviado = await enviarEmail(texto);

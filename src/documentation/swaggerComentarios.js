@@ -82,7 +82,7 @@
  *       201:
  *         description: Candidato criado com sucesso
  *       400:
- *         description: Dados inválidos (ex: CPF já cadastrado)
+ *         description: Dados inválidos (ex CPF já cadastrado)
  */
 
 /**
