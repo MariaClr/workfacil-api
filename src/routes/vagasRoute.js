@@ -14,6 +14,29 @@ const dataAtual = new Date().toISOString().split("T")[0];
 
 
 router.get("/", listagemVagas, errorHandler)
+router.get("/filtro/:area", async (req, res, next)=> {
+    try{ const vagas = await Vaga.findAll({
+          where:{
+                    ativo: true,
+                    dataVencimento: {
+                        [Op.gte]: dataAtual,
+                    },
+                    area: req.params.area
+                  
+                },
+         include: [
+             {
+                 model: Empresa,
+         
+             }
+         ]
+     });
+     console.log(vagas)
+    return  res.status(200).json(vagas)
+ }catch(error){
+     next(error)
+    }
+ })
 router.get("/:empresaId", validarToken,  async (req, res, next)=> {
    try{ const vagas = await Vaga.findAll({
          where:{
