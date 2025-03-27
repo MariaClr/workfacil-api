@@ -7,12 +7,19 @@ import {router as vagasRoute} from "./src/routes/vagasRoute.js"
 import { router as usuarioRoute } from "./src/routes/usuarioRoute.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import cors from 'cors';
+
 
 
 dotenv.config();
-
-
 const app = express();
+
+
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
+
+
 const porta = process.env.PORTA;
 
 
@@ -46,8 +53,9 @@ app.use("/empresas", empresaRoute);
 app.use("/candidato", candidatoRoute);
 app.use("/vaga", vagasRoute);
 app.use("/usuario", usuarioRoute);
-
-
+app.use("/", (req, res, next)=>{
+  return res.json("ola")
+})
 
 
 app.listen(porta, ()=>{

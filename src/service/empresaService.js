@@ -2,11 +2,23 @@ import Empresa from "../model/empresa.js";
 import Usuario from "../model/usuario.js";
 import db from "../db/db.js";
 import { ErroGeral } from "../error/errorPesonalizado.js";
+import { gerarSenhaCriptografada } from "../security/criptografia.js";
 
 export async function cadastroEmpresa(empresa) {
     const transaction = await db.transaction();
     empresa.senha = await gerarSenhaCriptografada(empresa.senha);
     console.log(empresa.senha);
+
+    const empresaCnpj = await Empresa.findOne({
+        where:{
+            cnpj: empresa.cnpj
+        }
+    })
+
+    if(empresaCnpj){
+        console.log("adsdasd")
+        throw new ErroGeral("Empresa com cnpj já cadastrada", 400)
+    }
 
     try {
         const usuario = await Usuario.create(
@@ -22,6 +34,7 @@ export async function cadastroEmpresa(empresa) {
         await transaction.commit();
         return novaEmpresa;
     } catch (erro) {
+        console.log("dasdasd")
         await transaction.rollback();
         throw erro;
     }

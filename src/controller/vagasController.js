@@ -14,7 +14,7 @@ export async function cadastroVaga(req,res,next){
 export async function listagemVagas(req, res, next) {
     try{
         const vagas = await listarVagas();
-        return res.send(vagas);
+        return res.status(200).json(vagas)
     }catch(error){
         next(error)
     }

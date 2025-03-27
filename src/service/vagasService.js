@@ -13,7 +13,7 @@ async function listarVagas(){
                 [Op.gte]: dataAtual
             }
           
-        }
+        },  include: [{ model: Empresa }] 
     });
     console.log(listaVagas)
     return listaVagas;

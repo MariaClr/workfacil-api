@@ -27,14 +27,21 @@ async function fazerLogin(email, senha) {
     }
 
     const token = gerarToken(usuario);
+
     console.log(token)
 
     return token;
 }
 
 
-async function listarUsuarios() {
-    const usuarios = await Usuario.findAll();
+async function listarUsuarios(usuarioAutenticado) {
+    console.log(usuarioAutenticado)
+    const usuarioID = usuarioAutenticado.usuarioId
+    const usuarios = await Usuario.findOne({
+        where: {
+            id: usuarioID
+        }
+    });
     return usuarios;
 }
 

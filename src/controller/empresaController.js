@@ -5,7 +5,7 @@ export async function cadastrarEmpresa(req, res, next){
     console.log(novaEmpresa)
     try {
         const cadastro = await cadastroEmpresa(novaEmpresa);
-        return res.send(cadastro)
+        return res.status(200).json("cadastro realizado")
     }
     catch(error){
         next(error)
@@ -31,7 +31,7 @@ export async function exclusaoEmpresa(req, res, next) {
         const usuarioAutenticado = req.usuarioAutenticado
         const id = req.params;
         const empresaRemovida = await removerEmpresa(id, usuarioAutenticado);
-        return res.send("empresa removida")
+        return res.json("empresa removida").status(200)
 
     }catch(error){
         next(error)
@@ -44,7 +44,7 @@ export async function atualizarEmpresa(req, res, next){
         const usuarioAutenticado = req.usuarioAutenticado
         const {id, endereco, numeroContato} = req.body;
         const empresaAtualizada = empresaAtualizar(id, endereco, numeroContato, usuarioAutenticado);
-        return res.send(empresaAtualizada)
+        return res.status(200).json("empresa removida")
     }catch(error){
         next(error)
     }

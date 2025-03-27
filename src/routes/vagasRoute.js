@@ -4,9 +4,39 @@ import { validarVaga } from "../middleware/vagaValidacao.js";
 import { validarToken } from "../token/token.js";
 import { verificaPermissao } from "../security/permissoes.js";
 import errorHandler from "../middleware/errorhandler.js";
+import Vaga from "../model/vagas.js";
+import Empresa from "../model/empresa.js";
+import { Op } from "sequelize";
+
+
 const router = Router();
+const dataAtual = new Date().toISOString().split("T")[0];
+
 
 router.get("/", listagemVagas, errorHandler)
+router.get("/:empresaId", validarToken,  async (req, res, next)=> {
+   try{ const vagas = await Vaga.findAll({
+         where:{
+                   ativo: true,
+                   dataVencimento: {
+                       [Op.gte]: dataAtual,
+                   },
+                   empresaId: req.params.empresaId
+                 
+               },
+        include: [
+            {
+                model: Empresa,
+        
+            }
+        ]
+    });
+    console.log(vagas)
+   return  res.status(200).json(vagas)
+}catch(error){
+    next(error)
+   }
+})
 router.post("/",validarToken, verificaPermissao("admin", "empresa"), validarVaga, cadastroVaga, errorHandler)
 router.put("/", validarToken, verificaPermissao("admin", "empresa"), atualizacaoVaga,errorHandler )
 router.delete("/:id", validarToken, verificaPermissao("admin", "empresa"), remocaoVaga, errorHandler)

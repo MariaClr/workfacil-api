@@ -17,7 +17,7 @@ export function candidatoCadastroValidacao(req, res, next){
         return res.status(400).send("O CPF deve ter exatamente 11 dígitos.");
     };
     if ( !validarCpf(candidato.cpf)) {
-        return res.status(400).json({ error: 'CPF inválido' });
+        return res.status(400).json( 'CPF inválido' );
     }
     next()
 };

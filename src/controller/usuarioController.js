@@ -13,7 +13,7 @@ async function usuarioLogin(req, res, next) {
 
 async function usuarioListagem(req, res, next){
     try {
-        const usuarios = await listarUsuarios()
+        const usuarios = await listarUsuarios(req.usuarioAutenticado)
         return res.send(usuarios);
     } catch (error) {
         next(error)

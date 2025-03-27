@@ -6,11 +6,11 @@ import errorHandler from "../middleware/errorhandler.js";
 
 const router = Router();
 
-router.get("/",  validarToken , verificaPermissao("admin"), usuarioListagem,errorHandler);
+router.get("/",  validarToken , usuarioListagem,errorHandler);
 router.get("/:id", validarToken, listarUsuarioPorId,errorHandler);
 router.get("/:id/candidato",validarToken,verificaPermissao("admin", "candidato"), listarCandidatoPorUsuario,errorHandler);
 router.get("/:id/empresa", validarToken, verificaPermissao("admin", "empresa"), listarEmpresaPorUsuario,errorHandler);
-router.post("/", usuarioLogin);
+router.post("/", usuarioLogin, errorHandler);
 router.post("/recuperarSenha", recuperarSenha, errorHandler)
 router.post("/novaSenha", novaSenha, errorHandler)
 
