@@ -7,6 +7,7 @@ import errorHandler from "../middleware/errorhandler.js";
 import Vaga from "../model/vagas.js";
 import Empresa from "../model/empresa.js";
 import { Op } from "sequelize";
+import Usuario from "../model/usuario.js";
 
 
 const router = Router();
@@ -14,7 +15,7 @@ const dataAtual = new Date().toISOString().split("T")[0];
 
 
 router.get("/", listagemVagas, errorHandler)
-router.get("/filtro/:area", async (req, res, next)=> {
+router.get("/filtro/:area", validarToken, async (req, res, next)=> {
     try{ const vagas = await Vaga.findAll({
           where:{
                     ativo: true,
@@ -27,6 +28,10 @@ router.get("/filtro/:area", async (req, res, next)=> {
          include: [
              {
                  model: Empresa,
+                  include: [
+                    {
+                      model: Usuario, 
+                    }],
          
              }
          ]
@@ -60,8 +65,8 @@ router.get("/:empresaId", validarToken,  async (req, res, next)=> {
     next(error)
    }
 })
-router.post("/",validarToken, verificaPermissao("admin", "empresa"), validarVaga, cadastroVaga, errorHandler)
+router.post("/", validarVaga, cadastroVaga, errorHandler)
 router.put("/", validarToken, verificaPermissao("admin", "empresa"), atualizacaoVaga,errorHandler )
-router.delete("/:id", validarToken, verificaPermissao("admin", "empresa"), remocaoVaga, errorHandler)
+router.delete("/:id", validarToken, remocaoVaga, errorHandler)
 
 export  {router};

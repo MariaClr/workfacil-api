@@ -11,6 +11,8 @@ function gerarToken(usuario){
 async function validarToken(req, res, next){
     const tokenAuth = req.headers.authorization;
 
+    console.log("token " + tokenAuth)
+
     if(!tokenAuth){
         return res.status(401).json("acesso negado");
     }
@@ -20,11 +22,10 @@ async function validarToken(req, res, next){
     
     try {
         const decoded = await jwt.verify(token, secret);
-
         req.usuarioAutenticado = decoded;
-        console.log(decoded);
-
+        console.log('Token validado:', decoded);
         next();
+        
 
     } catch (err) {
         return res.status(403).json({ message: 'Token inválido ou expirado as' });

@@ -1,9 +1,13 @@
 import { ErroGeral } from "../error/errorPesonalizado.js";
 import { Sequelize } from "sequelize";
 function errorHandler(err, req, res, next){
-    
+
+    console.log("entrou aqui")
         if (err instanceof ErroGeral) {
+            console.log("entrou aqui")
+
             return res.status(err.status).json({
+                
                 mensagem: err.message,
                 status: err.status
             });

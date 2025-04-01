@@ -1,5 +1,6 @@
 import { ErroGeral } from "../error/errorPesonalizado.js";
 import Empresa from "../model/empresa.js";
+import Usuario from "../model/usuario.js";
 import Vaga from "../model/vagas.js";
 import { Op } from "sequelize";
 
@@ -13,7 +14,10 @@ async function listarVagas(){
                 [Op.gte]: dataAtual
             }
           
-        },  include: [{ model: Empresa }] 
+        },  include: [{ model: Empresa, include: [
+            {
+              model: Usuario, 
+            }], },] 
     });
     console.log(listaVagas)
     return listaVagas;
@@ -46,11 +50,14 @@ async function cadastrarVaga(vaga) {
 }
 
 async function removerVaga(id, usuarioAutenticado) {
+    console.log("askdjasiodhaskudhaskjdhaskdjhasiodhasloidh")
+    console.log(id, usuarioAutenticado)
     const vaga = await Vaga.findByPk(id);
     if(vaga === null){
         throw new ErroGeral("vaga não encontrada", 400)
     }
-    if(vaga.empresaId !== usuarioAutenticado.id){
+    console.log( vaga)
+    if(vaga.empresaId !== usuarioAutenticado.usuarioId){
         throw new ErroGeral("não possui permissao ", 401)
     }
     vaga.ativo = false;

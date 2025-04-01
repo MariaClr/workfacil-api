@@ -1,8 +1,9 @@
 export function verificaPermissao(...tiposPermitidos) {
     return (req, res, next) => {
-        console.log(req.usuario);
-
-        if (!req.usuario || !req.usuario.perfil) {
+       
+        console.log(req.usuarioAutenticado.email)
+        if (!req.usuarioAutenticado || !req.usuarioAutenticado.perfil) {
+            console.log("negado")
             return res.status(401).json({ mensagem: "Usuário não autenticado!" });
         }
 

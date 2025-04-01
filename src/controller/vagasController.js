@@ -2,6 +2,7 @@ import { listarVagas, cadastrarVaga, removerVaga, atualizarVaga } from "../servi
 
 export async function cadastroVaga(req,res,next){
     try{
+        console.log(req.body)
         const vaga = req.body;
         const vagaCadastrada = await cadastrarVaga(vaga);
         return res.send(vagaCadastrada);
@@ -23,7 +24,9 @@ export async function listagemVagas(req, res, next) {
 
 export async function remocaoVaga(req, res, next) {
     try{
+        console.log(req.usuarioAutenticado.email + " adasdas")
         const usuarioAutenticado = req.usuarioAutenticado
+        console.log(usuarioAutenticado)
         const id = req.params.id;
         const vagaRemovida =  await removerVaga(id, usuarioAutenticado)
         return res.send(vagaRemovida);

@@ -22,3 +22,7 @@ export default function validaCnpj(cnpj) {
     return digito2 === digitos[13];
 }
 
+console.log(validaCnpj("11.444.777/0001-61")); // true (CNPJ válido)
+console.log(validaCnpj("11444777000161"));     // true (formatação diferente)
+console.log(validaCnpj("63.658.364/0001-50")); // true (outro válido)
+console.log(validaCnpj("63658364000150")); // true (outro válido)
